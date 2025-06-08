@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ראיון מיוחד לנתי - יום הולדת 80</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        h1 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .instructions {
+            text-align: right;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-right: 4px solid #667eea;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        
+        .instructions ol {
+            text-align: right;
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .video-container {
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        #videoPreview {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            background: #000;
+        }
+        
+        .question-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .progress {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .recording-indicator {
+            color: #e53e3e;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px 0;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .birthday-decoration {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        
+        .email-highlight {
+            background: #fed7d7;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #c53030;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="screen active" id="welcomeScreen">
+            <div class="birthday-decoration">🎉🎂🎈</div>
+            <h1>ראיון מיוחד לנתי</h1>
+            <h2>לכבוד יום הולדתו ה-80! 🎊</h2>
+            
+            <div class="instructions">
+                <p><strong>תודה על המוכנות להשתתף במתנה המיוחדת הזו!</strong></p>
+                <p>אנחנו מכינים סרטון הפתעה לנתי ליום הולדתו ה-80, ואנחנו זקוקים לעזרה שלכם.</p>
+                
+                <h3>איך זה עובד?</h3>
+                <ol>
+                    <li>תלחצו על "התחל הקלטה"</li>
+                    <li>המצלמה שלכם תיפתח</li>
+                    <li>תענו על 4 שאלות קצרות (כל שאלה בנפרד)</li>
+                    <li>בסוף תוכלו להוריד את הסרטון ולשלוח אותו</li>
+                </ol>
+                
+                <p><strong>זה לוקח בערך 3-4 דקות בלבד!</strong></p>
+                <p>הקלטה תתבצע ישירות במכשיר שלכם - פרטי לחלוטין.</p>
+            </div>
+            
+            <button class="btn" onclick="startInterview()">🎬 התחל הקלטה</button>
+        </div>
+        
+        <!-- Recording Screen -->
+        <div class="screen" id="recordingScreen">
+            <h2>ראיון מיוחד לנתי 🎈</h2>
+            
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="video-container">
+                <video id="videoPreview" autoplay muted></video>
+            </div>
+            
+            <div class="question-display" id="currentQuestion"></div>
+            
+            <div id="recordingIndicator" class="recording-indicator" style="display: none;">
+                🔴 מקליט...
+            </div>
+            
+            <button class="btn" id="recordBtn" onclick="toggleRecording()">🎬 התחל תשובה</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">➡️ השאלה הבאה</button>
+            <button class="btn" id="finishBtn" onclick="finishInterview()" style="display: none;">✅ סיים ראיון</button>
+        </div>
+        
+        <!-- Final Screen -->
+        <div class="screen" id="finalScreen">
+            <div class="birthday-decoration">🎉✨🎊</div>
+            <h1>תודה רבה!</h1>
+            <h2>הראיון הושלם בהצלחה! 🌟</h2>
+            
+            <div class="instructions">
+                <h3>עכשיו צריך לשלוח את הסרטונים:</h3>
+                <ol>
+                    <li>לחצו על כפתור "הורד קובץ ZIP"</li>
+                    <li>קובץ ZIP עם כל הסרטונים יישמר במכשיר שלכם</li>
+                    <li>שלחו את קובץ ה-ZIP באימייל אל:</li>
+                </ol>
+                
+                <div class="email-highlight">
+                    noafeller@gmail.com
+                </div>
+                
+                <p><strong>או שלחו דרך וואטסאפ/טלגרם</strong></p>
+                <p><strong>בנושא האימייל כתבו:</strong> "ראיון לנתי - יום הולדת 80"</p>
+                <p>אם יש בעיות טכניות, פשוט צלמו בטלפון רגיל ושלחו 😊</p>
+            </div>
+            
+            <button class="btn" id="downloadBtn" onclick="downloadZipFile()">📦 הורד קובץ ZIP עם כל הסרטונים</button>
+            <button class="btn" onclick="location.reload()">🔄 הקלטה חדשה</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        const questions = [
+            "מה המילה הראשונה שעולה לך לראש כשאתה שומע את השם 'נתי'?",
+            "כמה שנים את/ה מכיר/ה את נתי ומאיפה אתה מכיר אותו?", 
+            "מה את/ה מאחל לנתי ליום הולדתו ה-80?",
+            "ספר זכרון קצר או משהו שלמדת ממנו?"
+        ];
+        
+        let currentQuestionIndex = 0;
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+        let isRecording = false;
+        let allRecordings = [];
+        
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+        
+        async function startInterview() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' }, 
+                    audio: true 
+                });
+                
+                document.getElementById('videoPreview').srcObject = stream;
+                showScreen('recordingScreen');
+                displayCurrentQuestion();
+                updateProgress();
+            } catch (error) {
+                alert('לא ניתן לגשת למצלמה. אנא ודאו שנתתם הרשאה לשימוש במצלמה ובמיקרופון.');
+                console.error('Error accessing camera:', error);
+            }
+        }
+        
+        function displayCurrentQuestion() {
+            document.getElementById('currentQuestion').textContent = 
+                `שאלה ${currentQuestionIndex + 1}: ${questions[currentQuestionIndex]}`;
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        function toggleRecording() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+        
+        function startRecording() {
+            recordedChunks = [];
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm; codecs=vp9'
+            });
+            
+            mediaRecorder.ondataavailable = function(event) {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+            
+            mediaRecorder.onstop = function() {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                allRecordings.push({
+                    question: currentQuestionIndex + 1,
+                    blob: blob
+                });
+            };
+            
+            mediaRecorder.start();
+            isRecording = true;
+            
+            document.getElementById('recordBtn').textContent = '⏹️ עצור הקלטה';
+            document.getElementById('recordingIndicator').style.display = 'block';
+        }
+        
+        function stopRecording() {
+            mediaRecorder.stop();
+            isRecording = false;
+            
+            document.getElementById('recordBtn').style.display = 'none';
+            document.getElementById('recordingIndicator').style.display = 'none';
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('finishBtn').style.display = 'inline-block';
+            }
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            displayCurrentQuestion();
+            updateProgress();
+            
+            document.getElementById('recordBtn').textContent = '🎬 התחל תשובה';
+            document.getElementById('recordBtn').style.display = 'inline-block';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+        
+        function finishInterview() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            showScreen('finalScreen');
+        }
+        
+        function downloadZipFile() {
+            if (allRecordings.length === 0) {
+                alert('אין הקלטות לשמירה');
+                return;
+            }
+            
+            // Create ZIP file with all recordings
+            const zip = new JSZip();
+            const today = new Date().toISOString().slice(0,10);
+            
+            // Add each recording to the ZIP
+            allRecordings.forEach((recording, index) => {
+                const fileName = `שאלה-${recording.question}-${today}.webm`;
+                zip.file(fileName, recording.blob);
+            });
+            
+            // Generate ZIP file and download
+            zip.generateAsync({type:"blob"}).then(function(content) {
+                const url = URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ראיון-לנתי-יום-הולדת-80-${today}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('קובץ ZIP עם כל הסרטונים ירד בהצלחה! עכשיו שלחו אותו לnoafeller@gmail.com');
+            });
+        }
+    </script>
+</body>
+</html>
